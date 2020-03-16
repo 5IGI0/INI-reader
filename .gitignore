@@ -1,0 +1,4 @@
+.vscode/
+prog
+*.ini
+main.c
