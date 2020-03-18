@@ -2,8 +2,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "INI_structs.h"
-#include "INI_memory.h"
+#include "../INI_structs.h"
+#include "../INI_memory.h"
 
 typedef enum {
     INI_STAGE_SECTION,

@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#include "INI_structs.h"
-#include "INI_write.h"
+#include "../INI_structs.h"
+#include "../INI_write.h"
 
 _Bool INI_writeFile(INI_manager *manager, char *filename) {
     FILE *file = fopen(filename, "w");
