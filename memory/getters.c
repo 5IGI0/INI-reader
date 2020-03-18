@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
 
 #include "../INI_structs.h"
 
@@ -15,3 +17,18 @@ char *INI_getValue(INI_manager *manager, char *section, char *name) {
     return NULL;
 }
 
+_Bool INI_getValueAsInt(INI_manager *manager, char *section, char *name, int *output) {
+    char *tmp = INI_getValue(manager, section, name);
+
+    if (tmp == NULL)
+        return false;
+
+    output[0] = atoi(tmp);
+
+    if (output[0] == 0) {
+        if(tmp[0] == '0') return true;
+        else              return false;
+    }
+    
+    return true;
+}

@@ -6,7 +6,7 @@ Library for reading/writing .ini.
 
 - [ ] document the code
 - [ ] fragment files
-- [ ] get value as int
+- \[X] get value as int
 - [ ] set value from int
 - [ ] dump to string
 

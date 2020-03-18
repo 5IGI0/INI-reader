@@ -12,6 +12,9 @@ _Bool INI_setValue(INI_manager *manager, char *section, char *key, char *value);
 void INI_freeSection(INI_section *section);
 void INI_removeSection(INI_manager *manager, char *name);
 void INI_removeValue(INI_manager *manager, char *sectionName, char *key);
+
+// getters
 char *INI_getValue(INI_manager *manager, char *section, char *name);
+_Bool INI_getValueAsInt(INI_manager *manager, char *section, char *name, int *output);
 
 #endif
