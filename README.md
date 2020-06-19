@@ -5,7 +5,7 @@ Library for reading/writing .ini.
 ## TODO 
 
 - [ ] document the code
-- [ ] fragment files
+- \[X] fragment files
 - \[X] get value as int
 - \[X] set value from int
 - [ ] dump to string

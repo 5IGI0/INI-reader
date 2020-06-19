@@ -10,59 +10,52 @@
 
 // TODO : delete the section and realloc names/values in allocation error case
 _Bool INI_setValue(INI_manager *manager, char *section, char *key, char *value) {
-    char **oldNames = NULL;
-    char **oldValues = NULL;
+    INI_value *oldValues = NULL;
     INI_section *sectionPtr = INI_getSection(manager, section, true);
 
     if (section == NULL)
         return false;
 
     for (size_t i = 0; i < sectionPtr->size; i++) {
-        if (!strcmp(sectionPtr->names[i], key)) {
+        if (!strcmp(sectionPtr->values[i].name, key)) {
+            char *tmp = NULL;
             
-            oldNames = (void *)sectionPtr->values[i];
+            tmp = sectionPtr->values[i].value;
 
-            sectionPtr->values[i] = calloc(strlen(value)+1, 1);
-            if (sectionPtr->values[i] == NULL) {
-                sectionPtr->values[i] = (void *)oldNames;
+            sectionPtr->values[i].value = calloc(strlen(value)+1, 1);
+            if (sectionPtr->values[i].value == NULL) {
+                sectionPtr->values[i].value = tmp;
                 return false;
             }
             
-            strcpy(sectionPtr->values[i], value);
+            strcpy(sectionPtr->values[i].value, value);
 
             return true;
         }
         
     }
     
-    
-    oldNames = sectionPtr->names;
     oldValues = sectionPtr->values;
 
-    sectionPtr->names = realloc(sectionPtr->names, sizeof(char*)*(sectionPtr->size+1));
-    sectionPtr->values = realloc(sectionPtr->values, sizeof(char*)*(sectionPtr->size+1));
+    sectionPtr->values = realloc(sectionPtr->values, sizeof(INI_value)*(sectionPtr->size+1));
 
-    if (sectionPtr->names == NULL || sectionPtr->values == NULL) {
-        if (sectionPtr->names == NULL)
-            sectionPtr->names = oldNames;
-        if (sectionPtr->values == NULL)
-            sectionPtr->values = oldValues;
-        
+    if (sectionPtr->values == NULL) {
+        sectionPtr->values = oldValues;
         return false;
     }
 
     sectionPtr->size += 1;
 
-    sectionPtr->names[sectionPtr->size-1] = calloc(strlen(key)+1, 1);
-    sectionPtr->values[sectionPtr->size-1] = calloc(strlen(value)+1, 1);
+    sectionPtr->values[sectionPtr->size-1].name = calloc(strlen(key)+1, 1);
+    sectionPtr->values[sectionPtr->size-1].value = calloc(strlen(value)+1, 1);
 
-    if (sectionPtr->names[sectionPtr->size-1] == NULL || sectionPtr->values[sectionPtr->size-1] == NULL) {
+    if (sectionPtr->values[sectionPtr->size-1].name == NULL || sectionPtr->values[sectionPtr->size-1].value == NULL) {
         sectionPtr->size -= 1;
         return false;
     }
 
-    memcpy(sectionPtr->names[sectionPtr->size-1], key, strlen(key));
-    memcpy(sectionPtr->values[sectionPtr->size-1], value, strlen(value));
+    memcpy(sectionPtr->values[sectionPtr->size-1].name, key, strlen(key));
+    memcpy(sectionPtr->values[sectionPtr->size-1].value, value, strlen(value));
 
     return true;
 }

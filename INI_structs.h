@@ -3,9 +3,13 @@
 
 #include <stdint.h>
 
+typedef struct __INI_value {
+    char *name;
+    char *value;
+} INI_value;
+
 typedef struct __INI_section {
-    char **names;
-    char **values;
+    INI_value *values;
     char *name;
     uint8_t size;
 } INI_section;

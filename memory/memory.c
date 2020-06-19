@@ -81,13 +81,12 @@ INI_section *INI_getSection(INI_manager *manager, char *name, _Bool create) {
 void INI_freeSection(INI_section *section) {
 
     for (size_t i = 0; i < section->size; i++) {
-        free(section->names[i]);
-        free(section->values[i]);
+        free(section->values[i].name);
+        free(section->values[i].value);
     }
     
     free(section->name);
     free(section->values);
-    free(section->names);
     free(section);
 }
 
@@ -118,25 +117,22 @@ void INI_removeValue(INI_manager *manager, char *sectionName, char *key) {
         return;
     
     for (size_t i = 0; i < section->size; i++) {
-        if (!strcmp(section->names[i], key)) {
-            free(section->names[i]);
-            free(section->values[i]);
+        if (!strcmp(section->values[i].name, key)) {
+            free(section->values[i].name);
+            free(section->values[i].value);
 
             section->size -= 1;
 
             for (size_t y = i; y < section->size; y++) {
-                section->names[y] = section->names[y+1];
-                section->values[y] = section->values[y+1];
+                section->values[y].name = section->values[y+1].name;
+                section->values[y].value = section->values[y+1].value;
             }
 
             if (section->size == 0) {
                 free(section->values);
-                free(section->names);
                 section->values = NULL;
-                section->names = NULL;
             } else {
-                section->names = realloc(section->names, sizeof(char*)*manager->size);
-                section->values = realloc(section->values, sizeof(char*)*manager->size);
+                section->values = realloc(section->values, sizeof(INI_value)*manager->size);
             }
             break;
         }

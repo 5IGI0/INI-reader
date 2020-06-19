@@ -1,6 +1,7 @@
 #ifndef __INI_WRITE_H__
 #define __INI_WRITE_H__
 
+#include <stdio.h>
 #include <stdbool.h>
 
 #include "INI_structs.h"
